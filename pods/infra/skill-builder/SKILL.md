@@ -30,7 +30,7 @@ Ask or extract from context:
 6. **Dependencies**: does this skill need any MCPs, API keys, or other tools?
 7. **Who uses it**: which team member and in which environment (Claude Desktop, Claude Code, NanoClaw)?
 
-If the user can't answer step 4 in detail, the skill isn't ready to codify — it needs more observation of the actual process first.
+If the user can't answer step 4 in detail, the skill isn't ready to codify yet. Suggest: "Run this task manually 3 more times and write down the steps as you go. When you can describe it as a numbered list, come back and we'll build the skill." Codifying a fuzzy process produces a fuzzy skill.
 
 ### Step 2 — Pod assignment
 

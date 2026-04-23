@@ -109,9 +109,9 @@ For every showstopper, gap, and inconsistency: write the concrete fix. Not "impr
 
 ## Examples
 
-**Input:** "Review this investor update before I send it out" + [document pasted]
+**Input:** "Review this weekly team update before I send it out" + [document pasted]
 
-**Output:** Document type: investor update. Audience: LPs. Verdict: Revise. Main finding: no clear ask — the document reports activity but doesn't tell investors what it needs from them. Fix: add a final section: "What we need from you: [specific ask]."
+**Output:** Document type: internal update. Audience: team (10 people). Verdict: Revise. Main finding (Gap): no clear ask — the document reports what happened but doesn't tell the team what decisions are needed from them this week. Fix: add a final line: "Decision needed by Friday: [specific question]."
 
 ## Dependencies
 

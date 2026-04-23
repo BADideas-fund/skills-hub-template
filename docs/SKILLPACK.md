@@ -304,11 +304,11 @@ When you're not sure which pattern fits, run S-006 (automation-architect). It as
 
 Skills-hub runs across four environments. Write skills that work in all of them (tagged `all`) unless the skill genuinely needs environment-specific tools.
 
-### Claude Desktop / Cowork
+### Claude Desktop
 
-The default for non-technical users. Mount the skills-hub folder in Claude Desktop's folder picker. Each new session loads CLAUDE.md automatically.
+The default for non-technical users. Mount the skills-hub folder in Claude Desktop's folder picker (click the folder icon in the top-left of the interface). Each new session loads CLAUDE.md automatically.
 
-**Characteristics:** Session-scoped context. No persistent file access between sessions (only through the folder). Great for interactive skill execution.
+**Characteristics:** Session-scoped context. No persistent file access between sessions (only through the mounted folder). Great for interactive skill execution.
 
 **MCP support:** Claude Desktop supports MCPs configured in the app settings. If a skill depends on an MCP (Airtable, Notion, Slack), it only works in environments where that MCP is connected.
 
@@ -402,7 +402,7 @@ GBrain owns brain primitives:
 
 Skills-hub owns workflows that USE the brain:
 - Reading brain meeting pages to generate a leadership brief (cos-brief skill)
-- Reading brain company pages to write a portfolio update (portco-pulse skill)
+- Reading brain entity pages to generate a weekly synthesis (summary-brief skill)
 - Logging a new deal to the brain after adding it to Airtable (deal-add skill → brain write)
 
 The boundary: if GBrain has a built-in skill for it (ingest, enrich, maintain, query), don't rebuild it in skills-hub. Route to GBrain directly.
@@ -427,17 +427,36 @@ This pattern makes GBrain integration optional — skills work in both environme
 
 ### Adding optional GBrain calls to a skill
 
-In the skill's Instructions section, add a conditional step:
+**Without GBrain** — a skill that reviews a proposal starts from scratch every time:
+```
+Step 1 — Read the proposal
+Step 2 — Identify the author and audience
+Step 3 — Apply review criteria
+```
+
+**With GBrain** — the same skill gains context from the brain:
+```
+Step 0 — Brain lookup (if GBrain MCP available)
+  gbrain search "[author name]" → read existing page if found
+  Note: past review patterns for this author, recurring gaps, stated preferences
+  Proceed with enriched context
+
+Step 1 — Read the proposal
+Step 2 — Identify the author and audience
+Step 3 — Apply review criteria, informed by Step 0 patterns
+Step 4 (after) — Update author's brain page: "2026-05-01: reviewed Q2 proposal, recurring gap: no clear ask"
+```
+
+In SKILL.md, add the conditional step like this:
 
 ```markdown
 ### Step 0 — Brain lookup (if GBrain MCP available)
 
-Before starting, check the brain for existing context on this entity:
+Before starting, check the brain for existing context:
 
-1. `gbrain search "[company name]"` — retrieve existing brain pages
-2. If a brain page exists, read it and note: last interaction date, key decision-makers, open threads
-3. Proceed with enriched context
-4. After skill completes: update the brain page with any new information discovered
+1. `gbrain search "[person or company name]"` — retrieve existing brain pages
+2. If a brain page exists, note: last interaction, recurring patterns, open threads
+3. After the skill completes, update the brain page with any new observations
 
 If GBrain MCP is not available, skip this step and proceed from Step 1.
 ```
@@ -571,6 +590,15 @@ planned → draft → live → deprecated
 - No stale references
 
 This prevents the most common registry corruption: two people independently assign the same ID, or someone moves a skill directory without updating the registry.
+
+### CI enforcement
+
+`.github/workflows/registry-check.yml` runs automatically on every PR that touches REGISTRY.md or pods/. It catches two failure modes:
+
+1. **Duplicate IDs** — two skills assigned the same S-NNN. Happens when two people independently add a skill and pick the same next ID.
+2. **Dead paths** — a skill is listed in REGISTRY.md with `status: live` or `draft` but has no SKILL.md file on disk. Happens when someone moves a directory without updating the registry.
+
+Run the check locally before opening a PR: `bash scripts/check-registry.sh`.
 
 ### CHANGELOG discipline
 

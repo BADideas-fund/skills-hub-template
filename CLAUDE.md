@@ -1,5 +1,7 @@
 # [COMPANY NAME] Skills Hub
 
+> **First time here?** Replace every `[bracketed value]` in the company table below, then open a new session and say "hi." That's all you need to do to activate every skill in this repo.
+
 ## Your company
 
 | Field | Value |

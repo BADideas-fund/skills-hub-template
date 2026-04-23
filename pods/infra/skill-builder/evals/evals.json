@@ -1,0 +1,20 @@
+{
+  "skill_name": "skill-builder",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I want Claude to write our weekly investor update. We send it every Friday. It covers what we shipped, what's blocked, what's next, and one key metric.",
+      "expected_output": "Complete SKILL.md for 'weekly-investor-update' in content pod with trigger phrases, 4-section output format (shipped/blocked/next/metric), realistic example, and REGISTRY.md row."
+    },
+    {
+      "id": 2,
+      "prompt": "Build a skill that reviews sales proposals before we send them. We want it to check for missing pricing, unclear next steps, and weak value props.",
+      "expected_output": "Complete SKILL.md for 'proposal-review' in content pod with 3-pass review structure (pricing, next steps, value prop), severity-graded findings output, and REGISTRY.md row."
+    },
+    {
+      "id": 3,
+      "prompt": "I want to teach Claude how to write cold outreach emails for our product. Our audience is HR managers at 50-200 person companies.",
+      "expected_output": "Complete SKILL.md for 'cold-outreach' in content or growth pod with audience context baked in, 3-step structure (hook/problem/CTA), example with realistic HR manager prompt, and REGISTRY.md row."
+    }
+  ]
+}

@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BADideas AI Team</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --surface-alt: #f5f5f4;
+    --border: #e7e5e4;
+    --text-primary: #1c1917;
+    --text-secondary: #57534e;
+    --text-tertiary: #a8a29e;
+    --accent: #7c3aed;
+    --accent-light: #ede9fe;
+    --green: #16a34a;
+    --green-light: #dcfce7;
+    --amber: #d97706;
+    --amber-light: #fef3c7;
+    --red: #dc2626;
+    --red-light: #fee2e2;
+    --blue: #2563eb;
+    --blue-light: #dbeafe;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container { max-width: 720px; margin: 0 auto; padding: 48px 24px; }
+
+  .header { margin-bottom: 32px; }
+  .header h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .header p { font-size: 15px; color: var(--text-secondary); max-width: 480px; }
+  .header-link { font-size: 13px; color: var(--accent); text-decoration: none; margin-top: 8px; display: inline-block; }
+
+  .section { margin-bottom: 48px; }
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-tertiary);
+    margin-bottom: 16px;
+  }
+
+  /* Skill cards */
+  .skill-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 12px;
+    transition: box-shadow 0.15s ease;
+  }
+  .skill-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .skill-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .skill-role { font-size: 16px; font-weight: 700; }
+  .skill-dept {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  .dept-growth { background: var(--accent-light); color: var(--accent); }
+  .dept-content { background: #fce7f3; color: #be185d; }
+  .dept-platform { background: var(--red-light); color: var(--red); }
+  .dept-ops { background: var(--green-light); color: var(--green); }
+  .dept-brand { background: var(--amber-light); color: var(--amber); }
+  .skill-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 12px; }
+  .skill-prompt {
+    background: var(--surface-alt);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--text-primary);
+    line-height: 1.55;
+    cursor: pointer;
+  }
+  .skill-prompt::before {
+    content: 'Try:';
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .skill-prompt:hover { background: #eeeeec; }
+
+  /* Nav */
+  .nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .nav a {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    text-decoration: none;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    transition: all 0.1s;
+  }
+  .nav a:hover { color: var(--text-secondary); border-color: var(--border); }
+  .nav a.active { color: var(--text-primary); background: var(--surface); border-color: var(--border); font-weight: 500; }
+  .nav .new-dot {
+    width: 6px; height: 6px; background: var(--red); border-radius: 50%;
+    display: inline-block; margin-left: 4px; vertical-align: middle;
+  }
+
+  /* Org grid */
+  .org-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 600px) { .org-grid { grid-template-columns: 1fr; } }
+  .org-dept {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .org-dept-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .org-dept-name { font-size: 13px; font-weight: 700; }
+  .org-dept-head { font-size: 11px; color: var(--text-tertiary); font-weight: 600; }
+  .org-role { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; font-size: 13px; }
+  .org-role-name { color: var(--text-secondary); }
+  .org-role-name.active { color: var(--text-primary); font-weight: 500; }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .status-live { background: var(--green); }
+  .status-planned { background: var(--border); }
+
+  /* Progress bars */
+  .progress-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .progress-label { font-size: 13px; color: var(--text-secondary); min-width: 140px; }
+  .progress-bar { flex: 1; height: 6px; background: var(--surface-alt); border-radius: 999px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 999px; }
+  .fill-green { background: var(--green); }
+  .fill-amber { background: var(--amber); }
+  .fill-red { background: var(--red); }
+  .progress-num { font-size: 12px; color: var(--text-tertiary); font-weight: 600; min-width: 36px; text-align: right; }
+
+  /* Issues */
+  .issue { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .issue:last-child { border-bottom: none; }
+  .issue-severity {
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+    padding: 2px 6px; border-radius: 3px; flex-shrink: 0; height: fit-content; margin-top: 2px;
+  }
+  .sev-blocker { background: var(--red-light); color: var(--red); }
+  .sev-gap { background: var(--amber-light); color: var(--amber); }
+  .sev-done { background: var(--green-light); color: var(--green); }
+  .issue-text { font-size: 13px; color: var(--text-secondary); }
+  .issue-title { font-weight: 500; color: var(--text-primary); }
+
+  /* Roadmap */
+  .roadmap-item { display: flex; gap: 16px; margin-bottom: 16px; }
+  .roadmap-marker { display: flex; flex-direction: column; align-items: center; padding-top: 4px; }
+  .roadmap-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .roadmap-line { width: 1px; flex: 1; background: var(--border); margin-top: 4px; }
+  .roadmap-content { flex: 1; }
+  .roadmap-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .roadmap-date { font-size: 12px; color: var(--text-tertiary); margin-bottom: 6px; }
+  .roadmap-desc { font-size: 13px; color: var(--text-secondary); }
+
+  /* Team / Leaderboard */
+  .leaderboard { margin-bottom: 32px; }
+  .leader-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .leader-card.rank-1 { border-left: 3px solid var(--accent); }
+  .leader-card.rank-2 { border-left: 3px solid var(--blue); }
+  .leader-card.rank-3 { border-left: 3px solid var(--green); }
+  .leader-info { display: flex; align-items: center; gap: 14px; }
+  .leader-rank {
+    font-size: 18px; font-weight: 800; color: var(--text-tertiary); min-width: 28px;
+  }
+  .rank-1 .leader-rank { color: var(--accent); }
+  .rank-2 .leader-rank { color: var(--blue); }
+  .rank-3 .leader-rank { color: var(--green); }
+  .leader-name { font-size: 15px; font-weight: 600; }
+  .leader-role { font-size: 12px; color: var(--text-tertiary); }
+  .leader-stats { text-align: right; }
+  .leader-count { font-size: 22px; font-weight: 800; color: var(--text-primary); }
+  .leader-label { font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .skill-list-compact { font-size: 13px; color: var(--text-secondary); line-height: 1.8; }
+  .skill-list-compact .skill-tag {
+    display: inline-block;
+    background: var(--surface-alt);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    margin: 2px 2px;
+  }
+
+  /* Activity feed */
+  .activity-item {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 12px;
+  }
+  .activity-item:last-child { border-bottom: none; }
+  .activity-date {
+    font-size: 12px; color: var(--text-tertiary); font-weight: 600; min-width: 72px; padding-top: 2px;
+  }
+  .activity-content { font-size: 13px; color: var(--text-secondary); }
+  .activity-content strong { color: var(--text-primary); font-weight: 600; }
+
+  /* CTA box */
+  .cta-box {
+    background: var(--accent-light);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 24px;
+  }
+  .cta-box h3 { font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--accent); }
+  .cta-box p { font-size: 13px; color: var(--text-secondary); }
+  .cta-box code { background: white; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+
+  .footer { padding-top: 32px; border-top: 1px solid var(--border); }
+  .footer p { font-size: 12px; color: var(--text-tertiary); }
+  .footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <h1>Your AI team</h1>
+    <p>Describe what you need. Claude routes to the right person. No commands, no skill IDs.</p>
+    <a href="docs/getting-started.md" class="header-link">Setup guide &rarr;</a>
+  </div>
+
+  <nav class="nav" id="nav">
+    <a href="#" class="active" onclick="show('ready'); return false;">Ready to use</a>
+    <a href="#" onclick="show('team'); return false;">Team<span class="new-dot"></span></a>
+    <a href="#" onclick="show('new'); return false;">What's new<span class="new-dot"></span></a>
+    <a href="#" onclick="show('org'); return false;">Org chart</a>
+    <a href="#" onclick="show('status'); return false;">Build status</a>
+    <a href="#" onclick="show('roadmap'); return false;">Roadmap</a>
+  </nav>
+
+  <!-- ============ READY TO USE ============ -->
+  <div id="panel-ready">
+
+    <div class="section">
+      <div class="section-label">Growth &middot; CMO</div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="skill-role">Growth Designer</span>
+          <span class="skill-dept dept-growth">Growth</span>
+        </div>
+        <div class="skill-desc">Creates website design briefs for portfolio companies. The brief is complete enough for a developer to build from without talking to the founder.</div>
+        <div class="skill-prompt" onclick="navigator.clipboard.writeText(this.dataset.prompt)" data-prompt="Put together a website brief for TenantMeter. Pre-launch B2B SaaS for EU property managers, 50-500 units, energy compliance tracking. Founder building it himself, 2-week timeline.">Put together a website brief for TenantMeter. Pre-launch B2B SaaS for EU property managers, 50-500 units, energy compliance tracking. Founder building it himself, 2-week timeline.</div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="skill-role">Brief QA</span>
+          <span class="skill-dept dept-growth">Growth</span>
+        </div>
+        <div class="skill-desc">Reviews design briefs before development. Severity-graded findings with written fixes.</div>
+        <div class="skill-prompt" onclick="navigator.clipboard.writeText(this.dataset.prompt)" data-prompt="Review this design brief before we send it to development. [paste or attach brief]">Review this design brief before we send it to development. [paste or attach brief]</div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="skill-role">Builder</span>
+          <span class="skill-dept dept-growth">Growth</span>
+        </div>
+        <div class="skill-desc">Takes a brief and builds a complete website. Design tokens, production HTML/CSS/JS, responsive, accessible.</div>
+        <div class="skill-prompt" onclick="navigator.clipboard.writeText(this.dataset.prompt)" data-prompt="Build the TenantMeter website from this brief. [paste brief]">Build the TenantMeter website from this brief. [paste brief]</div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="skill-role">Code Reviewer</span>
+          <span class="skill-dept dept-growth">Growth</span>
+        </div>
+        <div class="skill-desc">Reviews frontend code for accessibility, performance, design token compliance, and conversion patterns.</div>
+        <div class="skill-prompt" onclick="navigator.clipboard.writeText(this.dataset.prompt)" data-prompt="Review this frontend code before we deploy. Check accessibility, performance, and design brief compliance. [paste code]">Review this frontend code before we deploy. [paste code]</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Brand &middot; Creative Director</div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="skill-role">Brand Voice</span>
+          <span class="skill-dept dept-brand">Brand</span>
+        </div>
+        <div class="skill-desc">Enforces BADideas verbal identity on any external-facing content. Loads brand kernel, applies three tests (competing-fund, out-loud, enemy-filter).</div>
+        <div class="skill-prompt" onclick="navigator.clipboard.writeText(this.dataset.prompt)" data-prompt="Review this LinkedIn post for BADideas brand voice. [paste post]">Review this LinkedIn post for BADideas brand voice. [paste post]</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Content &middot; Head of Content</div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="skill-role">Content QA</span>
+          <span class="skill-dept dept-content">Content</span>
+        </div>
+        <div class="skill-desc">Reviews proposals, memos, investor updates against quality standards. Severity-graded across 7 dimensions.</div>
+        <div class="skill-prompt" onclick="navigator.clipboard.writeText(this.dataset.prompt)" data-prompt="Review this proposal before it goes out. Is it ready to send? [paste document]">Review this proposal before it goes out. Is it ready to send? [paste document]</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Platform &middot; CTO</div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="skill-role">Solutions Architect</span>
+          <span class="skill-dept dept-platform">Platform</span>
+        </div>
+        <div class="skill-desc">Before building any automation, evaluates whether it should be a skill, workflow, agent, or hybrid.</div>
+        <div class="skill-prompt" onclick="navigator.clipboard.writeText(this.dataset.prompt)" data-prompt="I want to automate posting new Airtable deals to Slack with a quality summary. Should this be a workflow or an agent?">I want to automate posting new Airtable deals to Slack with a quality summary. Workflow or agent?</div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="skill-role">Automation Engineer</span>
+          <span class="skill-dept dept-platform">Platform</span>
+        </div>
+        <div class="skill-desc">Builds and debugs n8n workflows. Template search, incremental construction, validation, testing.</div>
+        <div class="skill-prompt" onclick="navigator.clipboard.writeText(this.dataset.prompt)" data-prompt="Build an n8n workflow that checks Airtable for deals updated in the last 24 hours and posts a daily digest to Slack.">Build an n8n workflow: Airtable deals updated in last 24h &rarr; Slack digest.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Fund Operations &middot; COO</div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="skill-role">Compliance Officer</span>
+          <span class="skill-dept dept-ops">Fund Ops</span>
+        </div>
+        <div class="skill-desc">Prepares Latvian regulatory reports: AML/CFT, quarterly fund, annual fund. Excel templates, data validation, format compliance.</div>
+        <div class="skill-prompt" onclick="navigator.clipboard.writeText(this.dataset.prompt)" data-prompt="Prepare the Q1 2026 AIFRPP-C quarterly fund report for submission.">Prepare the Q1 2026 AIFRPP-C quarterly fund report for submission.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ TEAM ============ -->
+  <div id="panel-team" style="display:none;">
+
+    <div class="section">
+      <div class="section-label">Skill Leaderboard</div>
+      <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">Who's building the AI team. Every skill you contribute compounds the whole org's output.</p>
+
+      <div class="leaderboard">
+        <div class="leader-card rank-1">
+          <div class="leader-info">
+            <span class="leader-rank">#1</span>
+            <div>
+              <div class="leader-name">Raimonds</div>
+              <div class="leader-role">GP &middot; Platform</div>
+            </div>
+          </div>
+          <div class="leader-stats">
+            <div class="leader-count">7</div>
+            <div class="leader-label">skills built</div>
+          </div>
+        </div>
+
+        <div class="leader-card rank-2">
+          <div class="leader-info">
+            <span class="leader-rank">#2</span>
+            <div>
+              <div class="leader-name">Ben</div>
+              <div class="leader-role">Growth</div>
+            </div>
+          </div>
+          <div class="leader-stats">
+            <div class="leader-count">3</div>
+            <div class="leader-label">skills built</div>
+          </div>
+        </div>
+
+        <div class="leader-card rank-3">
+          <div class="leader-info">
+            <span class="leader-rank">#3</span>
+            <div>
+              <div class="leader-name">Roberts</div>
+              <div class="leader-role">Engineering</div>
+            </div>
+          </div>
+          <div class="leader-stats">
+            <div class="leader-count">3</div>
+            <div class="leader-label">skills built</div>
+          </div>
+        </div>
+
+        <div class="leader-card">
+          <div class="leader-info">
+            <span class="leader-rank">#4</span>
+            <div>
+              <div class="leader-name">Arta</div>
+              <div class="leader-role">Fund Ops</div>
+            </div>
+          </div>
+          <div class="leader-stats">
+            <div class="leader-count">1</div>
+            <div class="leader-label">skill built</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Who built what</div>
+
+      <div style="margin-bottom: 20px;">
+        <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px;">Raimonds</div>
+        <div class="skill-list-compact">
+          <span class="skill-tag">S-024 automation-architect</span>
+          <span class="skill-tag">S-029 brand-voice</span>
+          <span class="skill-tag">S-003 design-brief</span>
+          <span class="skill-tag">S-021 brief-review</span>
+          <span class="skill-tag">S-022 web-pipeline</span>
+          <span class="skill-tag">S-023 frontend-review</span>
+          <span class="skill-tag">S-025 document-review</span>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px;">Ben</div>
+        <div class="skill-list-compact">
+          <span class="skill-tag">S-003 design-brief</span>
+          <span class="skill-tag">S-021 brief-review</span>
+          <span class="skill-tag">S-025 document-review</span>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px;">Roberts</div>
+        <div class="skill-list-compact">
+          <span class="skill-tag">S-019 n8n-builder</span>
+          <span class="skill-tag">S-022 web-pipeline</span>
+          <span class="skill-tag">S-023 frontend-review</span>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px;">Arta</div>
+        <div class="skill-list-compact">
+          <span class="skill-tag">S-018 regulatory-reporting</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-box">
+      <h3>Add your skill to the leaderboard</h3>
+      <p>Create a <code>SKILL.md</code> in the right pod folder, add it to <code>REGISTRY.md</code>, update <code>CHANGELOG.md</code>. Every skill you build makes the whole team faster. See <code>docs/style-guide.md</code> for the template.</p>
+    </div>
+
+  </div>
+
+  <!-- ============ WHAT'S NEW ============ -->
+  <div id="panel-new" style="display:none;">
+
+    <div class="section">
+      <div class="section-label">Recent changes</div>
+
+      <div class="activity-item">
+        <div class="activity-date">Apr 14</div>
+        <div class="activity-content"><strong>S-031 win-weekly-update (live).</strong> New writing-pod skill for the weekly WIN-track sprint update in #bad-brain. Drafts portfolio acceleration funnel metrics, onboarding pipeline, and BADbrain technical roadmap as a Slack draft. Cowork-only (Slack MCP). Three evals. &mdash; Roberts</div>
+      </div>
+
+      <div class="activity-item">
+        <div class="activity-date">Apr 14</div>
+        <div class="activity-content"><strong>S-030 wa-deal-announcement (draft).</strong> New fund-ops skill for inner-circle WhatsApp deal announcements. Two-message output (main + memo follow-up), Raimonds&rsquo; voice, sophisticated-investor audience. Phrase-level (not word-level) anti-hype discipline, operator-vs-founder attribution rule, exclusivity-as-fact framing, preserved fee gross-up caveat. Calibrated on the ForActive first-deal post (April 2026). Three evals. &mdash; Raimonds</div>
+      </div>
+
+      <div class="activity-item">
+        <div class="activity-date">Apr 13</div>
+        <div class="activity-content"><strong>Architecture overhaul.</strong> CLAUDE.md trimmed from 230 to 120 lines &mdash; now a thin resolver. 6 reference files extracted to docs/. Adopted Garry Tan&rsquo;s &ldquo;Thin Harness, Fat Skills&rdquo; pattern. Router now classifies internal vs external writing before applying skills. Dashboard rebuilt with Team leaderboard and activity feed. &mdash; Raimonds</div>
+      </div>
+
+      <div class="activity-item">
+        <div class="activity-date">Apr 12</div>
+        <div class="activity-content"><strong>Writing standard classification.</strong> Step 4 added to routing protocol: classify output as internal (style guide only) or external BADideas-branded (style guide + brand voice). Prevents brand voice tests from being applied to internal documents. Style guide scope expanded to all internal docs. &mdash; Raimonds</div>
+      </div>
+
+      <div class="activity-item">
+        <div class="activity-date">Mar 31</div>
+        <div class="activity-content"><strong>Team testing handover.</strong> Getting-started guide, Slack handover message, gap analysis. Dashboard launched with What&rsquo;s new tab. Setup guide linked in header. &mdash; Raimonds</div>
+      </div>
+
+      <div class="activity-item">
+        <div class="activity-date">Mar 30</div>
+        <div class="activity-content"><strong>Platform foundation.</strong> Repository created. 6 pods, 11 skills launched. CLAUDE.md orchestration router. Skills: design-brief, brief-review, web-pipeline, frontend-review, automation-architect, document-review, brand-voice, regulatory-reporting, n8n-builder, doc-coauthoring, claude-api, mcp-builder. &mdash; Raimonds, Ben, Roberts, Arta</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ORG CHART ============ -->
+  <div id="panel-org" style="display:none;">
+
+    <div class="section">
+      <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 20px;">7 departments. 12 skills live. Green = live, gray = planned.</p>
+
+      <div class="org-grid">
+
+        <div class="org-dept">
+          <div class="org-dept-header">
+            <span class="org-dept-name">Brand</span>
+            <span class="org-dept-head">Creative Director</span>
+          </div>
+          <div class="org-role"><span class="org-role-name active">Brand Voice</span><span class="status-dot status-live"></span></div>
+          <div class="org-role"><span class="org-role-name">Visual Identity</span><span class="status-dot status-planned"></span></div>
+        </div>
+
+        <div class="org-dept">
+          <div class="org-dept-header">
+            <span class="org-dept-name">Deal Intelligence</span>
+            <span class="org-dept-head">CIO</span>
+          </div>
+          <div class="org-role"><span class="org-role-name">Deal Analyst</span><span class="status-dot status-planned"></span></div>
+          <div class="org-role"><span class="org-role-name">Market Intelligence</span><span class="status-dot status-planned"></span></div>
+          <div class="org-role"><span class="org-role-name">Deal Ops</span><span class="status-dot status-planned"></span></div>
+          <div class="org-role"><span class="org-role-name">Screening Agent</span><span class="status-dot status-planned"></span></div>
+        </div>
+
+        <div class="org-dept">
+          <div class="org-dept-header">
+            <span class="org-dept-name">Growth</span>
+            <span class="org-dept-head">CMO</span>
+          </div>
+          <div class="org-role"><span class="org-role-name active">Growth Designer</span><span class="status-dot status-live"></span></div>
+          <div class="org-role"><span class="org-role-name active">Brief QA</span><span class="status-dot status-live"></span></div>
+          <div class="org-role"><span class="org-role-name active">Builder</span><span class="status-dot status-live"></span></div>
+          <div class="org-role"><span class="org-role-name active">Code Reviewer</span><span class="status-dot status-live"></span></div>
+          <div class="org-role"><span class="org-role-name">Pricing Lead</span><span class="status-dot status-planned"></span></div>
+          <div class="org-role"><span class="org-role-name">GTM Strategist</span><span class="status-dot status-planned"></span></div>
+        </div>
+
+        <div class="org-dept">
+          <div class="org-dept-header">
+            <span class="org-dept-name">Fund Operations</span>
+            <span class="org-dept-head">COO</span>
+          </div>
+          <div class="org-role"><span class="org-role-name active">Compliance Officer</span><span class="status-dot status-live"></span></div>
+          <div class="org-role"><span class="org-role-name">IR Lead</span><span class="status-dot status-planned"></span></div>
+          <div class="org-role"><span class="org-role-name">Fund Analytics</span><span class="status-dot status-planned"></span></div>
+          <div class="org-role"><span class="org-role-name">Financial Modeler</span><span class="status-dot status-planned"></span></div>
+        </div>
+
+        <div class="org-dept">
+          <div class="org-dept-header">
+            <span class="org-dept-name">Market Intelligence</span>
+            <span class="org-dept-head">Head of Intel</span>
+          </div>
+          <div class="org-role"><span class="org-role-name">Intelligence Analyst</span><span class="status-dot status-planned"></span></div>
+          <div class="org-role"><span class="org-role-name">Signal Scanner</span><span class="status-dot status-planned"></span></div>
+        </div>
+
+        <div class="org-dept">
+          <div class="org-dept-header">
+            <span class="org-dept-name">Platform</span>
+            <span class="org-dept-head">CTO</span>
+          </div>
+          <div class="org-role"><span class="org-role-name active">Solutions Architect</span><span class="status-dot status-live"></span></div>
+          <div class="org-role"><span class="org-role-name active">Automation Engineer</span><span class="status-dot status-live"></span></div>
+          <div class="org-role"><span class="org-role-name active">API Specialist</span><span class="status-dot status-live"></span></div>
+          <div class="org-role"><span class="org-role-name active">Integration Engineer</span><span class="status-dot status-live"></span></div>
+          <div class="org-role"><span class="org-role-name">Technical Lead</span><span class="status-dot status-planned"></span></div>
+          <div class="org-role"><span class="org-role-name">Agent Engineer</span><span class="status-dot status-planned"></span></div>
+        </div>
+
+        <div class="org-dept">
+          <div class="org-dept-header">
+            <span class="org-dept-name">Content</span>
+            <span class="org-dept-head">Head of Content</span>
+          </div>
+          <div class="org-role"><span class="org-role-name active">Content QA</span><span class="status-dot status-live"></span></div>
+          <div class="org-role"><span class="org-role-name active">Content Ops</span><span class="status-dot status-live"></span></div>
+          <div class="org-role"><span class="org-role-name active">WIN Reporter</span><span class="status-dot status-live"></span></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ BUILD STATUS ============ -->
+  <div id="panel-status" style="display:none;">
+
+    <div class="section">
+      <div class="section-label">Coverage by department</div>
+
+      <div class="progress-row">
+        <span class="progress-label">Content</span>
+        <div class="progress-bar"><div class="progress-fill fill-green" style="width:100%"></div></div>
+        <span class="progress-num">3/3</span>
+      </div>
+      <div class="progress-row">
+        <span class="progress-label">Platform</span>
+        <div class="progress-bar"><div class="progress-fill fill-green" style="width:67%"></div></div>
+        <span class="progress-num">4/6</span>
+      </div>
+      <div class="progress-row">
+        <span class="progress-label">Growth</span>
+        <div class="progress-bar"><div class="progress-fill fill-amber" style="width:40%"></div></div>
+        <span class="progress-num">4/10</span>
+      </div>
+      <div class="progress-row">
+        <span class="progress-label">Brand</span>
+        <div class="progress-bar"><div class="progress-fill fill-amber" style="width:50%"></div></div>
+        <span class="progress-num">1/2</span>
+      </div>
+      <div class="progress-row">
+        <span class="progress-label">Fund Operations</span>
+        <div class="progress-bar"><div class="progress-fill fill-amber" style="width:25%"></div></div>
+        <span class="progress-num">1/4</span>
+      </div>
+      <div class="progress-row">
+        <span class="progress-label">Deal Intelligence</span>
+        <div class="progress-bar"><div class="progress-fill fill-red" style="width:0%"></div></div>
+        <span class="progress-num">0/4</span>
+      </div>
+      <div class="progress-row">
+        <span class="progress-label">Market Intelligence</span>
+        <div class="progress-bar"><div class="progress-fill fill-red" style="width:0%"></div></div>
+        <span class="progress-num">0/2</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Known issues</div>
+      <div>
+        <div class="issue">
+          <span class="issue-severity sev-done">Fixed</span>
+          <div class="issue-text"><span class="issue-title">Deployment docs.</span> Getting-started guide rewritten for current repo structure (BADideas-fund/skills-hub). Apr 13.</div>
+        </div>
+        <div class="issue">
+          <span class="issue-severity sev-done">Fixed</span>
+          <div class="issue-text"><span class="issue-title">S-028 ghost entry.</span> brand-visual was listed as live in CLAUDE.md with no SKILL.md. Removed from router, marked planned in brand pod. Apr 13.</div>
+        </div>
+        <div class="issue">
+          <span class="issue-severity sev-blocker">Blocker</span>
+          <div class="issue-text"><span class="issue-title">Deal Intelligence is empty.</span> Most-used daily workflow (deal evaluation) has zero built skills. CIO department is vapor.</div>
+        </div>
+        <div class="issue">
+          <span class="issue-severity sev-blocker">Blocker</span>
+          <div class="issue-text"><span class="issue-title">S-018 and S-019 not in repo.</span> Regulatory reporting and n8n-builder SKILL.md files live in individual Cowork sessions, not committed to skills-hub. Team members can't access them.</div>
+        </div>
+        <div class="issue">
+          <span class="issue-severity sev-gap">Gap</span>
+          <div class="issue-text"><span class="issue-title">No skill testing.</span> Zero validation that skills produce correct output. Need evals.</div>
+        </div>
+        <div class="issue">
+          <span class="issue-severity sev-gap">Gap</span>
+          <div class="issue-text"><span class="issue-title">No usage tracking.</span> Can't see who's using which skills or how often. Leaderboard shows contributions only, not usage.</div>
+        </div>
+        <div class="issue">
+          <span class="issue-severity sev-gap">Gap</span>
+          <div class="issue-text"><span class="issue-title">No feedback loop.</span> Patterns found in one session disappear. No mechanism for skills to improve from usage.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ROADMAP ============ -->
+  <div id="panel-roadmap" style="display:none;">
+
+    <div class="section">
+
+      <div class="roadmap-item">
+        <div class="roadmap-marker">
+          <div class="roadmap-dot" style="background: var(--amber);"></div>
+          <div class="roadmap-line"></div>
+        </div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">Wave 1: Core deal + build pipeline</div>
+          <div class="roadmap-date">April 2026 &middot; In progress</div>
+          <div class="roadmap-desc">Deal Analyst (S-001), Market Intelligence (S-005), Deal Ops (S-020), plus 11 already-shipped skills. Priority: get S-018 and S-019 committed to repo.</div>
+        </div>
+      </div>
+
+      <div class="roadmap-item">
+        <div class="roadmap-marker">
+          <div class="roadmap-dot" style="background: var(--border);"></div>
+          <div class="roadmap-line"></div>
+        </div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">Wave 2: Portfolio intelligence + LP comms</div>
+          <div class="roadmap-date">May&ndash;June 2026</div>
+          <div class="roadmap-desc">Investor comms (S-010), fund reporting (S-011), pricing (S-006), GTM playbook (S-007), metrics dashboard (S-008).</div>
+        </div>
+      </div>
+
+      <div class="roadmap-item">
+        <div class="roadmap-marker">
+          <div class="roadmap-dot" style="background: var(--border);"></div>
+          <div class="roadmap-line"></div>
+        </div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">Wave 3: Automation + Agents</div>
+          <div class="roadmap-date">Q3 2026</div>
+          <div class="roadmap-desc">Deal screening agent (A-001), portco health check agent (A-002), market scanner (A-003), regulatory automation (N-003), deal intake automation (N-001).</div>
+        </div>
+      </div>
+
+      <div class="roadmap-item">
+        <div class="roadmap-marker">
+          <div class="roadmap-dot" style="background: var(--accent);"></div>
+        </div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">Feedback loop + skill evals</div>
+          <div class="roadmap-date">Ongoing</div>
+          <div class="roadmap-desc">Usage tracking, skill quality evals, learning loop that writes improvements back into skills after project milestones. Adopted from Garry Tan's architecture.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>BADideas Skills Platform &middot; <a href="https://github.com/BADideas-fund/skills-hub">GitHub</a> &middot; <a href="docs/getting-started.md">Setup guide</a> &middot; Last updated <span id="last-updated">April 14, 2026</span></p>
+  </div>
+
+</div>
+
+<script>
+function show(panel) {
+  ['ready','team','new','org','status','roadmap'].forEach(p => {
+    document.getElementById('panel-' + p).style.display = p === panel ? 'block' : 'none';
+  });
+  document.querySelectorAll('#nav a').forEach(a => a.classList.remove('active'));
+  event.target.closest('a').classList.add('active');
+}
+
+document.querySelectorAll('.skill-prompt').forEach(el => {
+  el.addEventListener('click', function() {
+    const orig = this.style.background;
+    this.style.background = '#d4d4d4';
+    setTimeout(() => this.style.background = orig, 150);
+  });
+});
+</script>
+
+</body>
+</html>

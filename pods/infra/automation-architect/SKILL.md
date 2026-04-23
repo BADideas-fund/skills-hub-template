@@ -112,13 +112,17 @@ If the user asked for a different approach, estimate that too for comparison.
 
 ## Examples
 
-**Input:** "I want n8n to watch for new deals in Airtable and post a summary to Slack."
+**Input:** "I want n8n to watch for new customer signups and post a welcome summary to Slack."
 
-**Assessment:** Level 5 — Hybrid. The trigger (new Airtable row) is deterministic → n8n. But "post a summary" requires interpreting the company description, evaluating team background, assessing market fit. A workflow posts a formatted row; an agent evaluates the full context. Build: n8n watches Airtable, calls Claude via HTTP with the row data and a skill prompt, posts Claude's output to Slack.
+**Assessment:** Level 5 — Hybrid. The trigger (new signup event/webhook) is deterministic → n8n. But "welcome summary" that's personalized to the customer's plan, segment, and use case requires judgment. A workflow posts a formatted row; an agent reads the signup data and writes a contextual summary. Build: n8n webhook → HTTP call to Claude with signup data + skill prompt → post output to Slack.
 
-**Input:** "Automate posting weekly portfolio metrics to Slack every Monday."
+**Input:** "Send a weekly digest of new user signups to the team every Monday morning."
 
-**Assessment:** Level 3 — Workflow. Pull metrics on a schedule, format, post. No judgment needed. n8n cron → HTTP request → Slack node. Build time: 1-2 hours.
+**Assessment:** Level 3 — Workflow. Pull records on a schedule, count and format, post. No interpretation needed — same query runs every week. n8n cron trigger → database/API node → format node → Slack node. Build time: 1-2 hours.
+
+**Input:** "I want Claude to draft a reply every time a customer emails support."
+
+**Assessment:** Level 4 — Agent. Each email has different context, tone, and urgency. An agent reads the email, checks prior conversation history if available, and drafts a reply that matches your support voice. Quality depends on accumulated context (what issues this customer has raised before). A workflow with fixed templates would produce generic replies. Build: email webhook → agent with document-review skill for tone calibration → draft posted to inbox for human review before send.
 
 ## Dependencies
 

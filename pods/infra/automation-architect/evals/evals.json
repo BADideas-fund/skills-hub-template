@@ -1,0 +1,20 @@
+{
+  "skill_name": "automation-architect",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I want to automate sending a Slack message whenever a new row is added to our Airtable CRM.",
+      "expected_output": "Level 3 — Workflow. Deterministic trigger (new Airtable row) and deterministic action (post to Slack). No judgment needed. Estimated build time: 1-2 hours."
+    },
+    {
+      "id": 2,
+      "prompt": "Should we build an agent or a workflow to triage incoming support tickets and route them to the right team member?",
+      "expected_output": "Level 4 — Agent. Routing by keyword is a workflow; routing by urgency, customer tier, and issue context requires judgment. Agent reads the ticket, assesses, routes with explanation."
+    },
+    {
+      "id": 3,
+      "prompt": "I want Claude to automatically review our weekly sales pipeline every Monday and highlight deals at risk.",
+      "expected_output": "Level 5 — Hybrid. Trigger (Monday cron) is deterministic → workflow. But 'highlight deals at risk' requires interpreting stage, last activity, forecast, and deal history — judgment heavy → agent. n8n fires Monday, agent reads pipeline data and produces risk assessment."
+    }
+  ]
+}
