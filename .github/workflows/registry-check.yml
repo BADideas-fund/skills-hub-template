@@ -1,0 +1,16 @@
+name: Registry check
+
+on:
+  pull_request:
+    paths:
+      - 'REGISTRY.md'
+      - 'pods/**'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for duplicate IDs and missing skill files
+        run: bash scripts/check-registry.sh
