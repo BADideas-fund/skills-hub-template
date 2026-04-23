@@ -49,6 +49,7 @@ while IFS='|' read -r _ id name pod status runtime source owner path deps desc _
   [[ "$id" =~ ^[SAN]-[0-9]+$ ]] || continue
   [[ "$status" == "live" || "$status" == "draft" ]] || continue
   [[ "$path" == pods/* ]] || continue
+  # If path ends in .md, check the file directly; otherwise look for SKILL.md inside the dir
   if [[ "$path" == *.md ]]; then
     skill_file="$path"
   else
